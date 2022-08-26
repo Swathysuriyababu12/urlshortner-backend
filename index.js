@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.get("/", async (req, res) => {
   const shortUrls = await url.find();
-  //res.send({ short: shortUrls });
+  res.send("All is well and listening");
 });
 
 app.get("/:shortUrl", async (req, res) => {
