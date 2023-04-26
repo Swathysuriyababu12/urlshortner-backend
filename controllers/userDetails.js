@@ -75,7 +75,7 @@ const forgotPassword = async (req, res) => {
   crypto.randomBytes(32, (err, buffer) => {
     if (err) {
       console.log(err);
-    }
+    }   
     const tokenForget = buffer.toString("hex");
     User.findOne({ email: req.body.email }).then((user) => {
       if (!user) {

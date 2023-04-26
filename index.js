@@ -17,22 +17,37 @@ app.get("/", async (req, res) => {
   res.send({ short: shortUrls });
 });
 
-app.get("/:shortUrl", async (req, res) => {
-  const shortUrl = await url.findOne({ short: req.params.shortUrl });
-  if (shortUrl == null) return res.sendStatus(404);
+// app.get("/:shortUrl", async (req, res) => {
+//   const shortUrl = await url.findOne({ short: req.params.shortUrl });
+//   if (shortUrl == null) return res.sendStatus(404);
 
-  shortUrl.clicks++;
+//   shortUrl.clicks++;
 
-  shortUrl.save();
-  //problem here cannot send header something
-  res.redirect("/");
-});
+//   shortUrl.save();
+//   //problem here cannot send header something
+//   res.redirect("/");
+// });
 
 app.post("/shorturl", async (req, res) => {
   await url.create({ full: req.body.full });
   res.redirect("/");
 });
 app.use("/api/user", userRouter);
+
+app.get("/:hash", async (req, res) => {
+  const shortUrl = req.params.hash;
+
+  const result = await url.findOne({
+    short: req.params.hash,
+  });
+  console.log(result);
+  if (result) {
+    console.log(result.full);
+    res.redirect(result.full);
+  } else {
+    res.sendStatus(404);
+  }
+});
 
 app.listen(process.env.PORT, async (req, res) => {
   console.log("connected to backend");
